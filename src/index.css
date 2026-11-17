@@ -1,0 +1,433 @@
+@import "tailwindcss";
+/* Class names are looked up in the sources only, not in the built pages. */
+@source not "../docs";
+@source not "../dist";
+
+/* The math fonts of the paper's figures (Computer Modern, as shipped with KaTeX). */
+@font-face {
+  font-family: "KaTeX Math";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../node_modules/katex/dist/fonts/KaTeX_Math-Italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "KaTeX Main";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../node_modules/katex/dist/fonts/KaTeX_Main-Regular.woff2") format("woff2");
+}
+
+@theme {
+  --font-serif: "Source Serif 4 Variable", "Source Serif 4", Georgia, Cambria, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --font-math: "KaTeX Math", "KaTeX Main", "Source Serif 4 Variable", Georgia, serif;
+
+  --color-paper: #f3f0e6;
+  --color-sheet: #fffdf8;
+  --color-ink: #17160f;
+  --color-ink-2: #57544a;
+  --color-ink-3: #8f8b7e;
+  --color-rule: #d5d0c1;
+
+  /* The colors of the figures in the paper */
+  --color-blue: #1f78b4;
+  --color-blue-light: #a6cee3;
+  --color-green: #33a02c;
+  --color-green-light: #b2df8a;
+  --color-red: #e31a1c;
+  --color-orange: #ff7f00;
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+  }
+  body {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--color-ink);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--color-blue-light);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: 2px;
+  }
+  button:not(:disabled),
+  select,
+  summary {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* ------------------------------------------------------------ typography */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+  }
+  .math {
+    font-family: var(--font-math);
+    font-style: italic;
+    font-size: 1.06em;
+    white-space: nowrap;
+  }
+  .math sub {
+    font-family: "KaTeX Main", var(--font-serif);
+    font-style: normal;
+    font-size: 0.7em;
+    margin-left: 0.04em;
+  }
+  .hint {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--color-ink-2);
+  }
+
+  /* -------------------------------------------------------------- masthead */
+  .masthead-title {
+    font-size: clamp(27px, 3vw, 42px);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.017em;
+  }
+  .masthead-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2.2rem;
+  }
+  .masthead-facts dd {
+    margin-top: 0.1rem;
+    font-size: 19px;
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+  }
+  .masthead-facts dd small {
+    font-size: 13px;
+    color: var(--color-ink-2);
+  }
+  .double-rule {
+    height: 5px;
+    border-top: 2px solid var(--color-ink);
+    border-bottom: 1px solid var(--color-ink);
+  }
+  .status {
+    font-size: 15px;
+    font-style: italic;
+    color: var(--color-ink-2);
+  }
+  .status-error {
+    font-style: normal;
+    color: var(--color-red);
+  }
+
+  /* -------------------------------------------------------------- sections */
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--color-ink);
+  }
+  .section-head .no {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-ink-3);
+  }
+  .section-head h2 {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .section-head .aside {
+    margin-left: auto;
+  }
+  .subhead {
+    margin: 1.1rem 0 0.55rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  /* -------------------------------------------------------------- controls */
+  .field {
+    min-width: 0;
+    border: 1px solid var(--color-ink);
+    border-radius: 0;
+    background: var(--color-sheet);
+    padding: 0.42rem 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.3;
+    color: var(--color-ink);
+  }
+  .field::placeholder {
+    color: var(--color-ink-3);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-blue);
+    box-shadow: inset 0 0 0 1px var(--color-blue);
+  }
+  .field-num {
+    width: 3.4rem;
+    padding-inline: 0.3rem;
+    text-align: center;
+  }
+  .btn {
+    border: 1px solid var(--color-ink);
+    border-radius: 0;
+    background: transparent;
+    padding: 0.5rem 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    transition: background-color 0.12s, color 0.12s, border-color 0.12s;
+  }
+  .btn:hover:not(:disabled) {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .btn-solid {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .btn-solid:hover:not(:disabled) {
+    border-color: var(--color-blue);
+    background: var(--color-blue);
+    color: #fff;
+  }
+  .btn:disabled {
+    opacity: 0.35;
+  }
+  .link-btn {
+    border: 0;
+    background: none;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+    text-decoration: underline;
+    text-decoration-color: var(--color-ink-3);
+    text-underline-offset: 3px;
+  }
+  .link-btn:hover {
+    color: var(--color-blue);
+    text-decoration-color: var(--color-blue);
+  }
+  .check {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex: none;
+    margin-top: 0.2rem;
+    accent-color: var(--color-ink);
+  }
+
+  /* ---------------------------------------------------------------- figure */
+  .plate {
+    border: 1px solid var(--color-ink);
+    background: var(--color-sheet);
+  }
+  .caption {
+    min-height: 2.9em;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .caption b {
+    font-weight: 600;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .transport {
+    display: inline-flex;
+    flex: none;
+    border: 1px solid var(--color-ink);
+    background: var(--color-sheet);
+  }
+  .transport button {
+    display: grid;
+    width: 2.3rem;
+    height: 2.1rem;
+    place-items: center;
+    color: var(--color-ink);
+    transition: background-color 0.12s, color 0.12s;
+  }
+  .transport button + button {
+    border-left: 1px solid var(--color-ink);
+  }
+  .transport button:hover:not(:disabled) {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .transport button:disabled {
+    color: var(--color-rule);
+  }
+  .transport button.is-primary:not(:disabled) {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .transport button.is-primary:hover:not(:disabled) {
+    background: var(--color-blue);
+  }
+  .scrubber {
+    min-width: 7rem;
+    flex: 1;
+    accent-color: var(--color-ink);
+  }
+  .v-label {
+    font-family: var(--font-math);
+    user-select: none;
+  }
+  .v-label .letter {
+    font-style: italic;
+  }
+  .v-label .index {
+    font-family: "KaTeX Main", var(--font-serif);
+    font-style: normal;
+  }
+  .v-label-spine {
+    fill: var(--color-ink);
+  }
+  .v-label-foot {
+    fill: var(--color-ink-2);
+  }
+  .v-label-removed {
+    fill: #b3aea1;
+  }
+
+  /* -------------------------------------------------------------- spectrum */
+  .cells {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  .cell {
+    display: grid;
+    min-width: 2.15rem;
+    height: 1.6rem;
+    place-items: center;
+    border: 1px solid var(--color-rule);
+    background: var(--color-sheet);
+    padding: 0 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink-2);
+  }
+  .cell[data-state="open"]:hover {
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+  .cell[data-state="visited"] {
+    border-color: #8fc763;
+    background: var(--color-green-light);
+    color: var(--color-ink);
+  }
+  .cell[data-state="visited"]:hover {
+    border-color: var(--color-green);
+  }
+  .cell[data-state="current"] {
+    border-color: var(--color-blue);
+    background: var(--color-blue);
+    font-weight: 600;
+    color: #fff;
+  }
+  .cell[data-state="void"] {
+    background: repeating-linear-gradient(135deg, transparent 0 4px, var(--color-rule) 4px 5px);
+    color: var(--color-ink-3);
+    text-decoration: line-through;
+  }
+  .swatch {
+    display: inline-block;
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-right: 0.3rem;
+    border: 1px solid var(--color-rule);
+    vertical-align: -1px;
+  }
+
+  /* ------------------------------------------------------------- crossings */
+  .bignum {
+    font-size: 68px;
+    font-weight: 500;
+    line-height: 0.86;
+    letter-spacing: -0.025em;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .gauge {
+    position: relative;
+    height: 7px;
+    border: 1px solid var(--color-ink);
+    background: var(--color-sheet);
+  }
+  .gauge > span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--color-ink);
+  }
+
+  /* ------------------------------------------------------------------- log */
+  .log {
+    max-height: 31rem;
+    overflow-y: auto;
+    border-bottom: 1px solid var(--color-ink);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-ink-3) transparent;
+  }
+  .log-row {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 2.3rem minmax(0, 1fr) auto;
+    column-gap: 0.6rem;
+    align-items: baseline;
+    border-bottom: 1px solid var(--color-rule);
+    border-left: 3px solid transparent;
+    padding: 0.42rem 0.5rem 0.42rem 0.3rem;
+    text-align: left;
+    font-size: 13.5px;
+    line-height: 1.35;
+  }
+  .log-row:last-child {
+    border-bottom: 0;
+  }
+  .log-row:hover {
+    background: var(--color-sheet);
+  }
+  .log-row[aria-current="true"] {
+    border-left-color: var(--color-blue);
+    background: var(--color-sheet);
+  }
+  .log-row .no {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-ink-3);
+  }
+  .log-row .count {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--color-ink-2);
+  }
+  .log-row .count b {
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+}

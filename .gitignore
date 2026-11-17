@@ -1,0 +1,24 @@
+# Only the files of the tool are tracked. Everything else in this folder stays out
+# of the repository, including anything that is added to the folder later.
+/*
+!/.gitignore
+!/README.md
+!/index.html
+!/package.json
+!/package-lock.json
+!/vite.config.js
+!/eslint.config.js
+!/src/
+!/test/
+!/public/
+!/docs/
+
+# Unused leftovers of the project template
+/src/App-backup.jsx
+/src/App.css
+/src/assets/
+
+node_modules
+*.log
+*.local
+.DS_Store
