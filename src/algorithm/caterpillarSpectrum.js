@@ -553,19 +553,25 @@ class SpectrumEngine {
     while (W.fwd(last).parent === u) last = W.fwd(last);
     const side = !W.bwd(first).isSpine ? "bwd" : !W.fwd(last).isSpine ? "fwd" : null;
     if (side !== null) {
-      // Case 2: the target region of u contains a foot y of another spine vertex.
+      // Case 2: the target region of u contains a processed foot y of another spine vertex,
+      // chosen next to a foot of u. Lemma "rebalance-region" for R = {feet of u, y}: y passes
+      // all the feet of u, which yields the values c-1, ..., c-l(u).
       this.ctx = `${name}, Case 2`;
-      let r = d - 1;
-      if (r > lu) {
-        this.auxSwap(yb, xb);
-        r -= 1;
-      }
-      if (side === "bwd") {
-        const y = W.bwd(first);
-        for (; r > 0; r -= 1) this.auxSwap(y, W.fwd(y));
-      } else {
-        const y = W.fwd(last);
-        for (; r > 0; r -= 1) this.auxSwap(y, W.bwd(y));
+      const y = side === "bwd" ? W.bwd(first) : W.fwd(last);
+      for (let r = lu; r > 0; r -= 1) this.auxSwap(y, side === "bwd" ? W.fwd(y) : W.bwd(y));
+      if (d === lu + 2) {
+        // One more value is needed, c-l(u)-1.
+        if (W.fwd(yb) === xb) {
+          // A foot of v_0 and a foot of v_k are consecutive.
+          this.auxSwap(yb, xb);
+        } else {
+          // Otherwise, y is the only foot of v_0 or of v_k, and the move of y has brought a
+          // foot y' of the other one of them next to a foot of u.
+          const other = y === xb ? yb : xb;
+          const z = side === "bwd" ? W.fwd(other) : W.bwd(other);
+          if ((y !== xb && y !== yb) || z.parent !== u) throw new Error("Internal error: Phase 1, Case 2 expects a foot of v_0 or v_k next to a foot of u.");
+          this.auxSwap(other, z);
+        }
       }
       this.undoAux();
       this.swap(x, u, -d, "move");
